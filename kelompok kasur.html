@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KasirKu - Aplikasi Kasir</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f1f5f9;
+    color: #1e293b;
+}
+
+header {
+    background: #2563eb;
+    color: white;
+    text-align: center;
+    padding: 25px 15px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 30px;
+}
+
+header p {
+    margin: 8px 0 0;
+}
+
+.container {
+    width: 95%;
+    max-width: 1000px;
+    margin: 20px auto;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 14px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+}
+
+.card h2 {
+    margin-top: 0;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 16px;
+    outline: none;
+}
+
+input:focus {
+    border-color: #2563eb;
+}
+
+.btn {
+    border: none;
+    padding: 12px 18px;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.btn:hover {
+    opacity: 0.85;
+}
+
+.tambah {
+    background: #16a34a;
+    width: 100%;
+}
+
+.bayar {
+    background: #2563eb;
+}
+
+.reset {
+    background: #dc2626;
+}
+
+.hapus {
+    background: #dc2626;
+    padding: 7px 10px;
+    font-size: 13px;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+th,
+td {
+    padding: 12px;
+    border-bottom: 1px solid #e2e8f0;
+    text-align: center;
+}
+
+th {
+    background: #2563eb;
+    color: white;
+}
+
+.total-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    padding: 18px;
+    background: #eff6ff;
+    border-radius: 10px;
+}
+
+.total-box strong {
+    color: #2563eb;
+    font-size: 22px;
+}
+
+.hasil {
+    background: #f8fafc;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.hasil p {
+    display: flex;
+    justify-content: space-between;
+    font-size: 17px;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+}
+
+.button-group .btn {
+    flex: 1;
+}
+
+.kosong {
+    padding: 25px;
+    color: #64748b;
+}
+
+/* MODAL STRUK */
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    z-index: 1000;
+}
+
+.struk {
+    background: white;
+    width: 100%;
+    max-width: 400px;
+    padding: 25px;
+    border-radius: 12px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.struk h2 {
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.struk > p {
+    text-align: center;
+}
+
+.struk hr {
+    border: none;
+    border-top: 1px dashed #999;
+    margin: 15px 0;
+}
+
+.item-struk {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin: 8px 0;
+    font-size: 14px;
+}
+
+.total-struk {
+    font-size: 18px;
+}
+
+.terima {
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+.cetak {
+    background: #16a34a;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.tutup {
+    background: #64748b;
+    width: 100%;
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+
+    header h1 {
+        font-size: 25px;
+    }
+
+    .card {
+        padding: 15px;
+    }
+
+    .button-group {
+        flex-direction: column;
+    }
+
+    .total-box {
+        font-size: 15px;
+    }
+
+    .total-box strong {
+        font-size: 18px;
+    }
+}
+
+/* CETAK */
+@media print {
+
+    body * {
+        visibility: hidden;
+    }
+
+    .struk,
+    .struk * {
+        visibility: visible;
+    }
+
+    .modal {
+        position: absolute;
+        display: block !important;
+        background: white;
+    }
+
+    .struk {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        max-width: 400px;
+        box-shadow: none;
+    }
+
+    .cetak,
+    .tutup {
+        display: none !important;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🛒 KasirKu</h1>
+    <p>Aplikasi Kasir Berbasis Web</p>
+</header>
+
+<main class="container">
+
+    <!-- TAMBAH BARANG -->
+    <section class="card">
+
+        <h2>📦 Tambah Barang</h2>
+
+        <div class="form-group">
+            <label for="namaBarang">Nama Barang</label>
+            <input
+                type="text"
+                id="namaBarang"
+                placeholder="Contoh: Indomie"
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="hargaBarang">Harga</label>
+            <input
+                type="number"
+                id="hargaBarang"
+                placeholder="Contoh: 3500"
+                min="1"
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="jumlahBarang">Jumlah</label>
+            <input
+                type="number"
+                id="jumlahBarang"
+                value="1"
+                min="1"
+            >
+        </div>
+
+        <button class="btn tambah" onclick="tambahBarang()">
+            ➕ Tambah ke Keranjang
+        </button>
+
+    </section>
+
+
+    <!-- KERANJANG -->
+    <section class="card">
+
+        <h2>🛍️ Keranjang Belanja</h2>
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Barang</th>
+                        <th>Harga</th>
+                        <th>Jumlah</th>
+                        <th>Subtotal</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+
+                <tbody id="keranjang">
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <div class="total-box">
+
+            <span>Total Belanja</span>
+
+            <strong id="total">
+                Rp 0
+            </strong>
+
+        </div>
+
+    </section>
+
+
+    <!-- PEMBAYARAN -->
+    <section class="card">
+
+        <h2>💰 Pembayaran</h2>
+
+        <div class="form-group">
+
+            <label for="uangBayar">
+                Uang Pembayaran
+            </label>
+
+            <input
+                type="number"
+                id="uangBayar"
+                placeholder="Contoh: 50000"
+                min="0"
+                oninput="hitungKembalian()"
+            >
+
+        </div>
+
+        <div class="hasil">
+
+            <p>
+                <span>Total:</span>
+                <strong id="totalBayar">
+                    Rp 0
+                </strong>
+            </p>
+
+            <p>
+                <span>Kembalian:</span>
+                <strong id="kembalian">
+                    Rp 0
+                </strong>
+            </p>
+
+        </div>
+
+        <div class="button-group">
+
+            <button
+                class="btn bayar"
+                onclick="prosesPembayaran()"
+            >
+                💳 Bayar
+            </button>
+
+            <button
+                class="btn reset"
+                onclick="resetKasir()"
+            >
+                🔄 Reset
+            </button>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- MODAL STRUK -->
+<div id="modalStruk" class="modal">
+
+    <div class="struk">
+
+        <h2>🛒 KasirKu</h2>
+
+        <p>Struk Pembelian</p>
+
+        <hr>
+
+        <div id="isiStruk"></div>
+
+        <hr>
+
+        <p class="total-struk">
+            Total:
+            <strong id="strukTotal">
+                Rp 0
+            </strong>
+        </p>
+
+        <p>
+            Bayar:
+            <strong id="strukBayar">
+                Rp 0
+            </strong>
+        </p>
+
+        <p>
+            Kembali:
+            <strong id="strukKembali">
+                Rp 0
+            </strong>
+        </p>
+
+        <p class="terima">
+            Terima Kasih 🙏
+        </p>
+
+        <button
+            class="btn cetak"
+            onclick="window.print()"
+        >
+            🖨️ Cetak Struk
+        </button>
+
+        <button
+            class="btn tutup"
+            onclick="tutupStruk()"
+        >
+            Tutup
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+let daftarBarang = [];
+
+
+/* FORMAT RUPIAH */
+function formatRupiah(angka) {
+
+    return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+        minimumFractionDigits: 0
+    }).format(angka);
+
+}
+
+
+/* TAMBAH BARANG */
+function tambahBarang() {
+
+    const nama =
+        document.getElementById("namaBarang").value.trim();
+
+    const harga =
+        Number(document.getElementById("hargaBarang").value);
+
+    const jumlah =
+        Number(document.getElementById("jumlahBarang").value);
+
+
+    if (nama === "") {
+
+        alert("Nama barang belum diisi!");
+
+        document.getElementById("namaBarang").focus();
+
+        return;
+    }
+
+
+    if (harga <= 0 || isNaN(harga)) {
+
+        alert("Harga barang harus lebih dari 0!");
+
+        document.getElementById("hargaBarang").focus();
+
+        return;
+    }
+
+
+    if (jumlah <= 0 || isNaN(jumlah)) {
+
+        alert("Jumlah barang harus lebih dari 0!");
+
+        document.getElementById("jumlahBarang").focus();
+
+        return;
+    }
+
+
+    /* CEK BARANG YANG SAMA */
+
+    const barangSama = daftarBarang.find(
+        barang =>
+            barang.nama.toLowerCase() === nama.toLowerCase()
+            &&
+            barang.harga === harga
+    );
+
+
+    if (barangSama) {
+
+        barangSama.jumlah += jumlah;
+
+    } else {
+
+        daftarBarang.push({
+
+            nama: nama,
+
+            harga: harga,
+
+            jumlah: jumlah
+
+        });
+
+    }
+
+
+    tampilkanKeranjang();
+
+
+    document.getElementById("namaBarang").value = "";
+
+    document.getElementById("hargaBarang").value = "";
+
+    document.getElementById("jumlahBarang").value = 1;
+
+    document.getElementById("namaBarang").focus();
+
+}
+
+
+/* TAMPILKAN KERANJANG */
+function tampilkanKeranjang() {
+
+    const keranjang =
+        document.getElementById("keranjang");
+
+
+    keranjang.innerHTML = "";
+
+
+    if (daftarBarang.length === 0) {
+
+        keranjang.innerHTML = `
+            <tr>
+                <td colspan="6" class="kosong">
+                    🛒 Belum ada barang
+                </td>
+            </tr>
+        `;
+
+        updateTotal();
+
+        return;
+    }
+
+
+    daftarBarang.forEach(
+        (barang, index) => {
+
+            const subtotal =
+                barang.harga * barang.jumlah;
+
+
+            keranjang.innerHTML += `
+
+                <tr>
+
+                    <td>
+                        ${index + 1}
+                    </td>
+
+                    <td>
+                        ${escapeHTML(barang.nama)}
+                    </td>
+
+                    <td>
+                        ${formatRupiah(barang.harga)}
+                    </td>
+
+                    <td>
+                        ${barang.jumlah}
+                    </td>
+
+                    <td>
+                        ${formatRupiah(subtotal)}
+                    </td>
+
+                    <td>
+
+                        <button
+                            class="btn hapus"
+                            onclick="hapusBarang(${index})"
+                        >
+                            🗑️ Hapus
+                        </button>
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+    );
+
+
+    updateTotal();
+
+}
+
+
+/* CEGAH HTML DARI NAMA BARANG */
+function escapeHTML(text) {
+
+    const div = document.createElement("div");
+
+    div.textContent = text;
+
+    return div.innerHTML;
+
+}
+
+
+/* HAPUS BARANG */
+function hapusBarang(index) {
+
+    if (
+        confirm(
+            "Yakin ingin menghapus barang ini?"
+        )
+    ) {
+
+        daftarBarang.splice(index, 1);
+
+        tampilkanKeranjang();
+
+    }
+
+}
+
+
+/* HITUNG TOTAL */
+function hitungTotal() {
+
+    let total = 0;
+
+
+    daftarBarang.forEach(
+        barang => {
+
+            total +=
+                barang.harga *
+                barang.jumlah;
+
+        }
+    );
+
+
+    return total;
+
+}
+
+
+/* UPDATE TOTAL */
+function updateTotal() {
+
+    const total =
+        hitungTotal();
+
+
+    document.getElementById("total").textContent =
+        formatRupiah(total);
+
+
+    document.getElementById("totalBayar").textContent =
+        formatRupiah(total);
+
+
+    hitungKembalian();
+
+}
+
+
+/* HITUNG KEMBALIAN */
+function hitungKembalian() {
+
+    const total =
+        hitungTotal();
+
+
+    const uang =
+        Number(
+            document.getElementById("uangBayar").value
+        ) || 0;
+
+
+    let kembali =
+        uang - total;
+
+
+    if (kembali < 0) {
+
+        kembali = 0;
+
+    }
+
+
+    document.getElementById("kembalian").textContent =
+        formatRupiah(kembali);
+
+}
+
+
+/* PROSES PEMBAYARAN */
+function prosesPembayaran() {
+
+    if (daftarBarang.length === 0) {
+
+        alert(
+            "Keranjang masih kosong!"
+        );
+
+        return;
+    }
+
+
+    const total =
+        hitungTotal();
+
+
+    const uang =
+        Number(
+            document.getElementById("uangBayar").value
+        ) || 0;
+
+
+    if (uang <= 0) {
+
+        alert(
+            "Masukkan uang pembayaran!"
+        );
+
+        return;
+    }
+
+
+    if (uang < total) {
+
+        alert(
+            "Uang pembayaran kurang " +
+            formatRupiah(total - uang)
+        );
+
+        return;
+    }
+
+
+    const kembali =
+        uang - total;
+
+
+    buatStruk(
+        total,
+        uang,
+        kembali
+    );
+
+
+    document.getElementById(
+        "modalStruk"
+    ).style.display = "flex";
+
+}
+
+
+/* BUAT STRUK */
+function buatStruk(
+    total,
+    uang,
+    kembali
+) {
+
+    const isiStruk =
+        document.getElementById(
+            "isiStruk"
+        );
+
+
+    isiStruk.innerHTML = "";
+
+
+    daftarBarang.forEach(
+        barang => {
+
+            const subtotal =
+                barang.harga *
+                barang.jumlah;
+
+
+            isiStruk.innerHTML += `
+
+                <div class="item-struk">
+
+                    <span>
+                        ${escapeHTML(barang.nama)}
+                        x${barang.jumlah}
+                    </span>
+
+                    <strong>
+                        ${formatRupiah(subtotal)}
+                    </strong>
+
+                </div>
+
+            `;
+
+        }
+    );
+
+
+    document.getElementById(
+        "strukTotal"
+    ).textContent =
+        formatRupiah(total);
+
+
+    document.getElementById(
+        "strukBayar"
+    ).textContent =
+        formatRupiah(uang);
+
+
+    document.getElementById(
+        "strukKembali"
+    ).textContent =
+        formatRupiah(kembali);
+
+}
+
+
+/* TUTUP STRUK */
+function tutupStruk() {
+
+    document.getElementById(
+        "modalStruk"
+    ).style.display = "none";
+
+}
+
+
+/* RESET KASIR */
+function resetKasir() {
+
+    if (
+        !confirm(
+            "Yakin ingin mereset transaksi?"
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    daftarBarang = [];
+
+
+    document.getElementById(
+        "namaBarang"
+    ).value = "";
+
+
+    document.getElementById(
+        "hargaBarang"
+    ).value = "";
+
+
+    document.getElementById(
+        "jumlahBarang"
+    ).value = 1;
+
+
+    document.getElementById(
+        "uangBayar"
+    ).value = "";
+
+
+    document.getElementById(
+        "modalStruk"
+    ).style.display = "none";
+
+
+    tampilkanKeranjang();
+
+}
+
+
+/* KLIK DI LUAR MODAL */
+window.onclick = function(event) {
+
+    const modal =
+        document.getElementById(
+            "modalStruk"
+        );
+
+
+    if (event.target === modal) {
+
+        tutupStruk();
+
+    }
+
+};
+
+
+/* JALANKAN SAAT PERTAMA DIBUKA */
+tampilkanKeranjang();
+
+</script>
+
+</body>
+</html>
