@@ -1,2 +1,0 @@
-# kasir-peweb
-kasir
