@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Curriculum Vitae — Indra Febri Suseno</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+      background: #f4efe6;
+      color: #1c1917;
+      line-height: 1.5;
+      padding: 24px 16px;
+    }
+
+    .sheet {
+      max-width: 720px;
+      margin: 0 auto;
+      background: #fffcf7;
+      border: 4px solid #1c1917;
+      box-shadow: 0 12px 32px rgba(28, 25, 23, 0.12);
+    }
+
+    .accent-bar {
+      height: 6px;
+      background: #8b1e2d;
+    }
+
+    .inner {
+      border: 1px solid #1c1917;
+      margin: 6px;
+      padding: 28px 32px 36px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+
+    .title-block h1 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 2rem;
+      font-style: italic;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+    }
+
+    .title-block .name {
+      margin-top: 8px;
+      font-size: 1.15rem;
+      font-weight: 600;
+    }
+
+    .title-block .lokasi {
+      margin-top: 4px;
+      font-size: 0.95rem;
+      color: #6b6560;
+    }
+
+    .foto {
+      width: 120px;
+      height: 160px;
+      object-fit: cover;
+      object-position: top;
+      border: 2px solid #8b1e2d;
+      flex-shrink: 0;
+      background: #8b1e2d;
+    }
+
+    section { margin-top: 24px; }
+
+    h2 {
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      border-bottom: 2px solid #1c1917;
+      padding-bottom: 4px;
+      margin-bottom: 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+    }
+
+    th {
+      width: 180px;
+      text-align: left;
+      font-weight: 400;
+      color: #6b6560;
+      padding: 5px 8px 5px 0;
+      vertical-align: top;
+      white-space: nowrap;
+    }
+
+    td.colon {
+      width: 14px;
+      color: #6b6560;
+      vertical-align: top;
+      padding: 5px 4px;
+    }
+
+    td.val {
+      font-weight: 500;
+      padding: 5px 0;
+      vertical-align: top;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    a:hover { color: #8b1e2d; }
+
+    .skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .skill {
+      border: 1px solid #d9d2c8;
+      background: #f4efe6;
+      border-radius: 999px;
+      padding: 4px 12px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .exp-title {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.35rem;
+      font-style: italic;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .exp-body {
+      margin-top: 6px;
+      color: #6b6560;
+      font-size: 0.95rem;
+      max-width: 52ch;
+    }
+
+    .toolbar {
+      max-width: 720px;
+      margin: 0 auto 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .toolbar button,
+    .toolbar a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 40px;
+      padding: 0 14px;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      text-decoration: none;
+      border: 1px solid #d9d2c8;
+      background: #fffcf7;
+      color: #1c1917;
+    }
+
+    .toolbar button.primary {
+      background: #8b1e2d;
+      border-color: #8b1e2d;
+      color: #fffcf7;
+    }
+
+    .toolbar button:hover,
+    .toolbar a:hover { opacity: 0.9; }
+
+    footer.note {
+      max-width: 720px;
+      margin: 16px auto 0;
+      text-align: center;
+      font-size: 0.75rem;
+      color: #9a938c;
+    }
+
+    @media (max-width: 560px) {
+      header {
+        flex-direction: column-reverse;
+        align-items: center;
+        text-align: center;
+      }
+      .inner { padding: 20px 16px 28px; }
+      th { width: 120px; white-space: normal; }
+      .title-block h1 { font-size: 1.5rem; }
+      .toolbar { justify-content: stretch; }
+      .toolbar button,
+      .toolbar a { flex: 1; justify-content: center; }
+    }
+
+    @media print {
+      body { background: white; padding: 0; }
+      .toolbar, footer.note { display: none !important; }
+      .sheet { box-shadow: none; max-width: none; border-color: #000; }
+      a { text-decoration: none; }
+      @page { size: A4; margin: 12mm; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="toolbar">
+    <button class="primary" type="button" onclick="window.print()">Cetak / PDF</button>
+    <a href="mailto:indrafebrisuseno@yahoo.com">Email</a>
+    <a href="tel:+6285263839596">Telepon</a>
+    <a href="https://wa.me/085126341765" target="_blank" rel="noopener">WhatsApp</a>
+  </div>
+
+  <article class="sheet">
+    <div class="accent-bar"></div>
+    <div class="inner">
+
+      <header>.
+        <div class="title-block">
+          <h1>Curriculum Vitae</h1>
+          <p class="name">Kevin Andrian</p>
+          <p class="lokasi">KP.cimalati kec.cicurug Kab.sukabumi</p>
+        </div>
+        <!-- Ganti src dengan path foto, contoh: src="foto.jpg" -->
+        <img
+          class="foto"
+          src="lynn.png"
+          alt="Pas foto Indra Febri Suseno"
+          width="120"
+          height="160"
+          onerror="this.style.display='none'"
+        />
+      </header>
+
+      <section>
+        <h2>Data Pribadi</h2>
+        <table>
+          <tr>
+            <th>Nama</th>
+            <td class="colon">:</td>
+            <td class="val">Kevin Andrian</td>
+          </tr>
+          <tr>
+            <th>Tempat, Tanggal Lahir</th>
+            <td class="colon">:</td>
+            <td class="val">sukabumi,03,2010</td>
+          </tr>
+          <tr>
+            <th>Jenis Kelamin</th>
+            <td class="colon">:</td>
+            <td class="val">Laki-laki</td>
+          </tr>
+          <tr>
+            <th>Agama</th>
+            <td class="colon">:</td>
+            <td class="val">Islam</td>
+          </tr>
+          <tr>
+            <th>Tinggi Badan</th>
+            <td class="colon">:</td>
+            <td class="val">155cm</td>
+          </tr>
+          <tr>
+            <th>Berat Badan</th>
+            <td class="colon">:</td>
+            <td class="val">50 kg</td>
+          </tr>
+          <tr>
+            <th>Alamat</th>
+            <td class="colon">:</td>
+            <td class="val">Kp.cimalati rt 02 rw 01</td>
+          </tr>
+          <tr>
+            <th>Handphone</th>
+            <td class="colon">:</td>
+            <td class="val"><a href="tel:+6285263839596">085126341765</a></td>
+          </tr>
+          <tr>
+            <th>Status</th>
+            <td class="colon">:</td>
+            <td class="val">Belum Menikah</td>
+          </tr>
+          <tr>
+            <th>Email</th>
+            <td class="colon">:</td>
+            <td class="val"><a href="mailto:indrafebrisuseno@yahoo.com">Veldoraqt@gmail.com</a></td>
+          </tr>
+        </table>
+      </section>
+
+      <section>
+        <h2>Data Pendidikan</h2>
+        <table>
+          <tr>
+            <th>Sekolah Dasar</th>
+            <td class="colon">:</td>
+            <td class="val">SDN 1 Cicurug (2017 – 2023)</td>
+          </tr>
+          <tr>
+            <th>SMP</th>
+            <td class="colon">:</td>
+            <td class="val">MTS ASSA'ADAH(2023 – 2026)</td>
+          </tr>
+          <tr>
+            <th>SMK</th>
+            <td class="colon">:</td>
+            <td class="val">SMK INFORMATIKA CBI(2026 – 2029)</td>
+          </tr>
+          <tr>
+
+      <section>
+        <h2>Kemampuan</h2>
+        <table>
+          <tr>
+            <th>Informasi Teknologi</th>
+            <td class="colon">:</td>
+            <td class="val">Bisa Office, Visual Basic, dan Online</td>
+          </tr>
+          <tr>
+            <th>Bahasa</th>
+            <td class="colon">:</td>
+            <td class="val">Bahasa Indonesia (Aktif) · English (Pasif)</td>
+          </tr>
+        </table>
+        <div class="skills">
+          <span class="skill">Microsoft Office</span> 
+          <span class="skill">Visual Basic</span>
+          <span class="skill">Online</span>
+        </div>
+      </section>
+
+      <section>
+        <h2>Pengalaman</h2>
+        <p class="exp-title">Fresh Graduate</p>
+        <p class="exp-body">
+           Membuat konsep sistem pemilah sampah berbasis AI dan mikrokontroler ESP32 sebagai proyekproy pembelajaran
+        </p>
+      </section>
+
+    </div>
+  </article>
+
+  <footer class="note">Curriculum Vitae digital · Indra Febri Suseno</footer>
+
+</body>
+</html>
